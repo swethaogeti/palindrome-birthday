@@ -1,35 +1,33 @@
-var birthDayDate=document.querySelector("#birthday-input");
-var showButton=document.querySelector("#show-button");
-var result=document.querySelector("#result")
+var birthDayDate = document.querySelector("#birthday-input");
+var showButton = document.querySelector("#show-button");
+var result = document.querySelector("#result")
 
-showButton.addEventListener('click',clickHandler);
+showButton.addEventListener('click', clickHandler);
 
- function clickHandler(e){
-   var bdayStr=birthDayDate.value;
+function clickHandler(e) {
+    var bdayStr = birthDayDate.value;
 
-   if(bdayStr!==''){
-var listOfDate=bdayStr.split('-');
-var date={
-    day:Number(listOfDate[2]),
-    month:Number(listOfDate[1]),
-    year:Number(listOfDate[0])
-};
-var isPalindrome=checkPalindromeForAllDateFormats(date);
-if(isPalindrome){
-   // result.innerText= `${date.day}-${date.month}-${date.year}  Yay !! your birthday is a palindrome!!`
-   showMsgTrue(date);
-}else{
+    if (bdayStr !== '') {
+        var listOfDate = bdayStr.split('-');
+        var date = {
+            day: Number(listOfDate[2]),
+            month: Number(listOfDate[1]),
+            year: Number(listOfDate[0])
+        };
+        var isPalindrome = checkPalindromeForAllDateFormats(date);
+        if (isPalindrome) {
 
-    showMsgFalse(date);
-//     result.innerText= ` You entered date: ${date.day}-${date.month}-${date.year}\n `
-//    var [counter,nextDate]= getNextPalindromeDate(date);
-//    result.innerText +=`The next palindrome date is ${nextDate.day}-${nextDate.month}-${nextDate.year} , you missed it by ${counter} days\n`
+            showMsgTrue(date);
+        } else {
 
-//    var[counterPrev,prevDate]=getPrevPalindromeDate(date);
-//    result.innerText +=`The previous palindrome date is ${prevDate.day}-${prevDate.month}-${prevDate.year} , you missed it by ${counterPrev} days`
-}
+            showMsgFalse(date);
 
-   }
+        }
+
+    } else {
+
+        result.innerText = "Input can't be empty !"
+    }
 }
 
 function reverseString(str) {
@@ -140,121 +138,117 @@ function getNextDate(date) {
                 }
             }
         }
-     } else {
-            if (day > daysInMonth[month - 1]) {
-                day = 1;
-                month++;
-            }
+    } else {
+        if (day > daysInMonth[month - 1]) {
+            day = 1;
+            month++;
         }
-
-        if (month > 12) {
-            month = 1;
-            year++;
-        }
-
-        return {
-            day: day,
-            month: month,
-            year: year
-        }
-
     }
 
-
-    function getPrevDate(date){
-        var day=date.day;
-        var month = date.month;
-        var year = date.year;
-
-
-        if(day===1){
-            if(month===4 || month===6 || month===9||month===11){
-                day=31;
-                month=month-1;
-            }else if(month===3){
-                if(year%4===0){
-                    day=29;
-                }else{
-                    day=28;
-                }
-                month=month-1;
-            }else if(month===1){
-                day=31;
-                month=12;
-                year=year-1;
-            }else if(month===2){
-                day=31;
-                month=month-1;
-            }else{
-                day=30;
-                month=month-1;
-            }
-        }else{
-            day=day-1;
-        }
-        return {
-            day: day,
-            month: month,
-            year: year
-        }
-
+    if (month > 12) {
+        month = 1;
+        year++;
     }
-    
 
-    
-
-function getNextPalindromeDate(date){
-    var counter=0;
-    var nextDate=getNextDate(date);
-
-    while(1){
-       counter++;
-       var isPalindrome=checkPalindromeForAllDateFormats(nextDate);
-       if(isPalindrome){
-           break;
-       }
-       nextDate=getNextDate(nextDate);
+    return {
+        day: day,
+        month: month,
+        year: year
     }
-    return[counter,nextDate];
+
 }
 
-function getPrevPalindromeDate(date){
-    var counterPrev=1;
-    var prevDate=getPrevDate(date)
-    while(1){
-        counterPrev++;
-        var isPalindrome=checkPalindromeForAllDateFormats(prevDate);
-        if(isPalindrome){
+
+function getPrevDate(date) {
+    var day = date.day;
+    var month = date.month;
+    var year = date.year;
+
+
+    if (day === 1) {
+        if (month === 4 || month === 6 || month === 9 || month === 11) {
+            day = 31;
+            month = month - 1;
+        } else if (month === 3) {
+            if (year % 4 === 0) {
+                day = 29;
+            } else {
+                day = 28;
+            }
+            month = month - 1;
+        } else if (month === 1) {
+            day = 31;
+            month = 12;
+            year = year - 1;
+        } else if (month === 2) {
+            day = 31;
+            month = month - 1;
+        } else {
+            day = 30;
+            month = month - 1;
+        }
+    } else {
+        day = day - 1;
+    }
+    return {
+        day: day,
+        month: month,
+        year: year
+    }
+
+}
+
+
+
+
+function getNextPalindromeDate(date) {
+    var counter = 0;
+    var nextDate = getNextDate(date);
+
+    while (1) {
+        counter++;
+        var isPalindrome = checkPalindromeForAllDateFormats(nextDate);
+        if (isPalindrome) {
             break;
+        }
+        nextDate = getNextDate(nextDate);
     }
-    prevDate=getPrevDate(prevDate);
+    return [counter, nextDate];
+}
+
+function getPrevPalindromeDate(date) {
+    var counterPrev = 1;
+    var prevDate = getPrevDate(date)
+    while (1) {
+        counterPrev++;
+        var isPalindrome = checkPalindromeForAllDateFormats(prevDate);
+        if (isPalindrome) {
+            break;
+        }
+        prevDate = getPrevDate(prevDate);
     }
-    return[counterPrev,prevDate];
-   
-}
-
-function showMsgTrue(date){
-    result.innerText= `😁${date.day}-${date.month}-${date.year} is a Palindrome number. \n     Yay!! your birthday is a palindrome 😎!!`  
-    result.style.color="#FF0099";
-    result.style.border="3px solid blue";
-    result.style .backgroundColor="rgb(212, 240, 247)";
-}
-
-
-function showMsgFalse(date){
-    result.innerText= `😌  ${date.day}-${date.month}-${date.year} is not a palindrome.\n `
-    var [counter,nextDate]= getNextPalindromeDate(date);
-    result.innerText +=`The next palindrome date is ${nextDate.day}-${nextDate.month}-${nextDate.year} , you missed it by ${counter} days.\n`
- 
-    var[counterPrev,prevDate]=getPrevPalindromeDate(date);
-    result.innerText +=`The previous palindrome date is ${prevDate.day}-${prevDate.month}-${prevDate.year} , you missed it by ${counterPrev} days. `
-
-    result.style.color="#9333EA";
-    result.style.border="3px solid yellow";
-    result.style .backgroundColor="rgb(212, 240, 247)";
+    return [counterPrev, prevDate];
 
 }
 
+function showMsgTrue(date) {
+    result.innerText = `😁${date.day}-${date.month}-${date.year} is a Palindrome number. \n     Yay!! your birthday is a palindrome 😎!!`
+    result.style.color = "#FF0099";
+    result.style.border = "3px solid blue";
+    result.style.backgroundColor = "rgb(212, 240, 247)";
+}
 
 
-    
+function showMsgFalse(date) {
+    result.innerText = `😌  ${date.day}-${date.month}-${date.year} is not a palindrome.\n `
+    var [counter, nextDate] = getNextPalindromeDate(date);
+    result.innerText += `The next palindrome date is ${nextDate.day}-${nextDate.month}-${nextDate.year} , you missed it by ${counter} days.\n`
+
+    var [counterPrev, prevDate] = getPrevPalindromeDate(date);
+    result.innerText += `The previous palindrome date is ${prevDate.day}-${prevDate.month}-${prevDate.year} , you missed it by ${counterPrev} days. `
+
+    result.style.color = "#9333EA";
+    result.style.border = "3px solid yellow";
+    result.style.backgroundColor = "rgb(212, 240, 247)";
+
+}
